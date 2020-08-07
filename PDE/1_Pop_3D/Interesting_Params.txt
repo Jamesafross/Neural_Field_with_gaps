@@ -1,0 +1,43 @@
+Turing
+v = 10.0
+eta_0 =0.1
+Delta = 0.5
+alfa = 5.0
+kappaV = 1.0
+kappaS = -25.0
+tau = 1
+
+Turing-TuringHopf intersect (dotted lines)
+#high gap junction coupling
+v = 0.3002
+eta_0 =0.3261
+Delta = 0.5
+alfa = 5.0
+kappaV = 1.307
+kappaS = 12.0
+tau = 1
+tau_a = 0.5
+delta = 0.0
+
+#low gap junction coupling
+v = 4.002
+eta_0 =8.12
+Delta = 0.5
+alfa = 5.0
+kappaV = 0.23
+kappaS = 12.0
+tau = 1
+tau_a = 0.5
+delta = 0.0
+
+#spirals
+
+v = 2
+eta_0 =3
+Delta = 0.5
+alfa = 5.0
+kappaV = 1.0
+kappaS = 12.0
+tau = 1
+tau_a = 0.5
+delta = 0.0
