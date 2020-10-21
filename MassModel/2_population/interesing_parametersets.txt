@@ -1,0 +1,24 @@
+######
+
+tauE = 1
+tauI= 0.5
+kappaVE = 0.15
+kappaVI = 0.15
+kappaSEE = 2.5
+kappaSIE = 14
+kappaSEI = -5.1
+kappaSII = -1.4
+eta_0E = 10.0
+eta_0I = -12.5
+deltaE = 0.5
+deltaI = 0.5
+alphaEE = 1
+alphaIE = 1.4
+alphaEI = 0.7
+alphaII = 0.4
+betaEE = 2.0
+betaIE = 1.0
+betaEI = 2.0
+betaII = 3
+
+#######
