@@ -1,3 +1,9 @@
+# functions used in the solver
+# F1: ∂R/∂t
+# G1: ∂V/∂t
+# ddR: ∂²R/∂t²
+# dddR: ∂³R/∂t³
+
 function F1(R, V, kappaV, Delta, tau)
     return (1/tau)*(-kappaV * R .+ 2 * R .* V .+ Delta / (tau * pi))
 end
