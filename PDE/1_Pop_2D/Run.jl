@@ -3,30 +3,45 @@ using SparseArrays
 using ProgressMeter
 using DifferentialEquations
 using NPZ
+# # # # # # # # # # # # # # # # # # # # # #
+#
+# Main file for running the model in
+# 1 spatial dimension.
+#
+# You are able to edit parameters directly
+# in this file.
+#
+# # # # # # # # # # # # # # # # # # # # # #
+
 #Include Files
 include("banded_matrices.jl")
 include("RHS_funcs_wizardHat.jl")
 include("functions.jl")
 include("find_SS.jl")
-#spatial parameters
-X_max = 8pi;
-dx = pi/(2^6)
-T_max = 600
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+# SPATIAL DISCRETISATION PARAMETERS
+#
+X_max = 8pi; # size of domain
+dx = pi/(2^6) # spatial discretisation size
+T_max = 600 # maximum time
 dxdx = dx * dx;
-X = Int(2*X_max / dx);
-Dxx = (1 / dxdx) * D2x(X)
+X = Int(2*X_max / dx); # number of grid points
+Dxx = (1 / dxdx) * D2x(X) # create second order finite difference matrix
 X_space = LinRange(-X_max,X_max,X)
-#model parameters
-v = 3    # axonal velocity
-eta_0 =0.3 # mean drive
-Delta = 0.5 # coherence
-alfa = 3 # synaptic time constant
-kappaV =1.2 # gap junction strength
-kappaS = 5 #synaptic coupling strength
-tau = 1 # membrane time constant
 
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+#    MODEL PARAMETERS
+#
+v = 3                 # axonal velocity
+eta_0 =0.3            # mean drive
+Delta = 0.5           # coherence
+alfa = 3              # synaptic time constant
+kappaV =1.2           # gap junction strength
+kappaS = 5            # synaptic coupling strength
+tau = 1               # membrane time constant
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-k_c = 1 #wave length to excite (initial conditions)
+k_c = 1  # wave length to excite (initial conditions)
 
 print(X)
 #steady state

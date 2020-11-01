@@ -4,43 +4,54 @@ using ProgressMeter
 using DifferentialEquations
 using NPZ
 using JLD
-#include("psi_pde_neumannBC.jl")7
+# # # # # # # # # # # # # # # # # # # # # #
+#
+# Main file for running the model in
+# 1 spatial dimension.
+#
+# You are able to edit parameters directly
+# in this file.
+#
+# # # # # # # # # # # # # # # # # # # # # #
+
+# include files
 include("banded_matrices.jl")
 include("RHS_funcs_wizardHat.jl")
 include("functions.jl")
 include("find_SS.jl")
 
-#Editable parameters
-#Spatial discretisation
-X_max = pi #m
-X_min = -pi
-N = 200
-T_max =100
-#params
-v = 2
-eta_0=5
-Delta = 0.5
-alfa = 5.0
-kappaV = 0.5
-kappaS = 12.0
-tau = 1
-tau_a = 0.5
-delta = 0.0
-saveat = .1
-
-
-#Spatially discretisation
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+# SPATIAL DISCRETISATION PARAMETERS
 #
-dx = 2*(X_max-X_min)/N
-
+X_max = pi # maximum of domain
+X_min = -pi # minimum of domain
+X = 200 # number of grid points
+T_max =100 # number of time points (dt is decided by adaptive solver)
+dx = 2*(X_max-X_min)/X # spatial discretisation size
 dxdx = dx * dx;
-X=N
 XX = Int(X^2)
-Xspace =  LinRange(X_min,X_max,X)
+Xspace =  LinRange(X_min,X_max,X) # the spatial grid
+Dxx = (1/dxdx)*D2r1(X, XX) # construct the differential operator matrices in x direction
+Dyy = (1/dxdx)*D2r2(X, XX) # construct the differential operator matrices in y direction
+Dxxyy = Dxx+Dyy # combine the differential operator matrices.
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+#    MODEL PARAMETERS
+#
+v = 3                 # axonal velocity
+eta_0 =0.3            # mean drive
+Delta = 0.5           # coherence
+alfa = 3              # synaptic time constant
+kappaV =1.2           # gap junction strength
+kappaS = 5            # synaptic coupling strength
+tau = 1               # membrane time constant
+saveat = .1
+# # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 
 zeroRV = SteadyState()
 print("\n Fixed points are : R = ", zeroRV[1],"\n V = ", zeroRV[2],"\n")
 
+# Initialising initial conditions
 R0 = zeros(XX)
 V0=zeros(XX)
 A10=zeros(XX)
@@ -62,6 +73,7 @@ perturb =  real(0.01*init_conds(3,3,[pi/2,2pi/3,4pi/3],[1,3,3],Xspace,Xspace'))
 
 perturb = reshape(perturb,XX)
 
+# initial conditions
 R0 = zeroRV[1] .+ perturb
 V0 = zeroRV[2] .+ perturb
 psi0 = perturb
@@ -70,10 +82,7 @@ A20 = perturb
 A30 = perturb
 g0 = perturb
 p0 = perturb
-a0 = perturb
 
-
-#R0=5*rand(XX)
 print("\n Use end of last simulation as initial conditions? (y/N)")
 ans1 = readline(stdin)
 if ans1 == "Y" || ans1 == "y"
@@ -87,11 +96,8 @@ if ans1 == "Y" || ans1 == "y"
     #print(size(u0))
 else
 print("\n Making sparse operator matrices ...... \n")
-Dxx = (1/dxdx)*D2r1(X, XX)
-Dyy = (1/dxdx)*D2r2(X, XX)
-Dxxyy = Dxx+Dyy
 print("done")
-u0 = zeros(9 * XX)
+u0 = zeros(8 * XX)
 u0[1:XX] .= R0
 u0[XX + 1:2 * XX] .= V0
 u0[2*XX + 1:3*XX] .= psi0
@@ -100,19 +106,11 @@ u0[4*XX + 1:5*XX] .= A20
 u0[5*XX + 1:6*XX] .= A30
 u0[6*XX + 1:7*XX] .= p0
 u0[7*XX + 1:8*XX] .= g0
-u0[8*XX+1:9*XX] .= a0
 end
 
-
-#readline(stdin)u0 .= sol[:,end]
-#u0 .= 5*rand(8*XX)
-
-
-
-
-
+#solve
 tspan = (0.0, T_max)
-params = [tau,tau_a,kappaV,kappaS, eta_0, alfa, Delta, v , Dxxyy,delta]
+params = [tau,kappaV,kappaS, eta_0, alfa, Delta, v , Dxxyy]
 prob = ODEProblem(rhsFun, u0, tspan, params)
 print("\n Solving....... \n")
 sol = solve(prob,saveat =saveat, progress = true)

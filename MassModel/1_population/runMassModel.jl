@@ -1,16 +1,10 @@
-using FFTW
 using Plots
-using Statistics
-using LinearAlgebra
 using NPZ
-using DSP
-using MAT
 using SparseArrays
 using DifferentialEquations
 include("Solvers.jl")
 include("trim.jl")
 include("rhsFunctions.jl")
-include("rhsFunctionsZ.jl")
 include("firingrate.jl")
 
 #parameters
@@ -27,7 +21,6 @@ beta = 1;
 
 #time discretisation
 T = 100
-
 dt = 0.1
 
 
@@ -40,13 +33,6 @@ p = [kappaV,kappaS,tau,eta_0,delta,Alpha]
 tspan = (0.0,1200)
 prob1 = ODEProblem(rhs_function,u01,tspan,p)
 sol1 = solve(prob1,reltol=1e-8, abstol=1e-8)
-
-
-
-
-
-Fs = 20000
-
 
 
 
