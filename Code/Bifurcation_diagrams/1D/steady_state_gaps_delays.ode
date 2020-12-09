@@ -1,0 +1,12 @@
+par eta0=10,nu=2,kappaS=-30,kappaV=0,delta=0.1,alpha=0.5,tau=8
+
+R(0)=0.0874
+V(0)=0.2045
+
+R'=-kappaV*R+delta/(tau*pi)+2*R*V
+V'=eta0+V^2-pi^2*tau^2*R^2
+
+
+
+@ meth=cvode,dt=0.001,total=40,maxstore=10000000,bounds=1000
+done

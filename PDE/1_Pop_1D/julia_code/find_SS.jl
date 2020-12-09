@@ -7,5 +7,9 @@ function f!(F, x)
 end
 function SteadyState()
     SS = nlsolve(f!, [ 2.0; 1])
+    while SS.zero[1]< 0
+        SS = nlsolve(f!, [ 2.0 + randn(); 1+ randn()])
+    end
+
     return SS.zero
 end

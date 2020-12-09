@@ -22,3 +22,21 @@ betaEI = 2.0
 betaII = 3
 
 #######
+
+
+tauE = 50
+tauI= 30
+kappaVE = 0.5
+kappaVI = 0.5
+kappaSEE = 10
+kappaSIE = 12
+kappaSEI = -10.2
+kappaSII = -5
+eta_0E =8
+eta_0I = 3.5
+deltaE = 0.5
+deltaI = 0.5
+alphaEE = 0.6
+alphaIE = 0.7
+alphaEI = 0.35
+alphaII =0.4

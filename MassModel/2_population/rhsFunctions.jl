@@ -12,19 +12,19 @@ function rhs_function(du, u, p, t)
     pII=u[11]
     gII=u[12]
     #rE
-    du[1] =(1/tauE)*(- kappaVE * rE + 2 * rE * vE + (deltaE / (tauE*pi)))
+    du[1] =(1/tauE)*(-kappaVE * rE + 2 * rE * vE + (deltaE / (tauE*pi)))
     #rI
-    du[2] =(1/tauI)*(- kappaVI * rI + 2 * rI * vI + (deltaI / (tauI*pi)))
+    du[2] =(1/tauI)*(-kappaVI * rI + 2 * rI * vI + (deltaI / (tauI*pi)))
     #vE
-    du[3] =(1/tauE)*(gEE * betaEE*kappaSEE + gEI * betaEI * kappaSEI - (tauE^2)*(pi^2) * (rE^2) +  vE^2 + eta_0E)
+    du[3] =(1/tauE)*(gEE * kappaSEE + gEI * kappaSEI - (tauE^2)*(pi^2)*(rE^2) +  vE^2 + eta_0E)
     #vI
-    du[4] =(1/tauI)*(gIE * betaIE* kappaSIE + gII * betaII * kappaSII - (pi^2)*(tauI^2) * (rI^2) + vI^2 + eta_0I)
+    du[4] =(1/tauI)*(gIE * kappaSIE + gII *  kappaSII - (tauI^2)*(pi^2)*(rI^2) + vI^2 + eta_0I)
     #psiEE
-    du[5] = alphaEE * (-pEE +   u[1])
+    du[5] = alphaEE * (-pEE +  rE)
     #gEE
     du[6] = alphaEE * (-gEE + pEE)
     #psiIE
-    du[7] = alphaIE * (-pIE +   u[1])
+    du[7] = alphaIE * (-pIE +  rE)
     #gIE
     du[8] = alphaIE * (-gIE + pIE)
     #psiEI
@@ -36,7 +36,7 @@ function rhs_function(du, u, p, t)
     #gII
     du[12] = alphaII * (-gII + pII)
 end
-
+# unused functions  - - - -
 #function for model with shunts + gaps
 function rhs_function_SHUNTS(du,u,p,t)
     rE=u[1]

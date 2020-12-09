@@ -1,0 +1,27 @@
+par eta0=10,nu=10,kappaS=-60,delta=0.1,alpha=0.5,tau=8,k=0
+
+R(0)=0.0874
+V(0)=0.2045
+w(0)=3.58
+kappaV(0)=0.5
+
+
+# Let ab1=(a1b1-a2b2) and ab2=(a1b2+a2b1)
+ab1(w,R,V) = w^4*tau^2/alpha^2-w^2*(2*tau/alpha*(kappaV-4*V)+2/alpha^2*(2*(V^2+R^2*pi^2*tau^2)-V*kappaV)+tau^2)+4*(V^2+R^2*pi^2*tau^2)-2*V*kappaV
+ab2(w,R,V) = w*(-w^2*tau/alpha*(2*tau+1/alpha*(kappaV-4*V))+4*(2*(V^2+R^2*pi^2*tau^2)-V*kappaV)/alpha+tau*(kappaV-4*V))
+
+# Real and imaginary parts of C - ((1+\lambda/nu)^2)^2
+
+c2(w,k) = 4*w/nu*(1-w^2/nu^2+3/2*k^2)
+c1(w,k) = (1-w^2/nu^2+3/2*k^2)^2-4*w^2/nu^2
+
+
+kappaV'=ab1(w,R,V)*c2(w,k)+ab2(w,R,V)*c1(w,k)+2*kappaS*R*w/nu
+R'=-kappaV*R+2*R*V+delta/(tau*pi)
+V'=eta0+V^2-pi^2*tau^2*R^2
+w'=ab1(w,R,V)*c1(w,k)-ab2(w,R,V)*c2(w,k)+kappaS*R*(3*k^2-2*w^2/nu^2)
+
+
+
+@ meth=cvode,dt=0.001,total=40,maxstore=10000000,bounds=1000
+done

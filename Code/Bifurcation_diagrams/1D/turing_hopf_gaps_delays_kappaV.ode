@@ -1,0 +1,52 @@
+par eta0=10,nu=2,kappaS=-30,delta=0.1,alpha=0.5,tau=8
+
+R(0)=0.0874
+V(0)=0.2045
+k(0)=0.88
+w(0)=0.58
+kappaV(0)=0.5
+
+# characteristic of the form A*B*C-D, where A=a1+ia2, B=b1+ib2,
+# C=c1+ic2 and D=d1+id2. There for
+# Re(char) = (a1b1-a2b2)c1 - (a1b2+a2b1)c2 - d1
+# Im(char) = (a1b1-a2b2)c2 + (a1b2+a2b1)c1 - d2
+
+# Let ab1=(a1b1-a2b2) and ab2=(a1b2+a2b1)
+ab1(w,R,V) = w^4*tau^2/alpha^2-w^2*(2*tau/alpha*(kappaV-4*V)+2/alpha^2*(2*(V^2+R^2*pi^2*tau^2)-V*kappaV)+tau^2)+4*(V^2+R^2*pi^2*tau^2)-2*V*kappaV
+ab2(w,R,V) = w*(-w^2*tau/alpha*(2*tau+1/alpha*(kappaV-4*V))+4*(2*(V^2+R^2*pi^2*tau^2)-V*kappaV)/alpha+tau*(kappaV-4*V))
+
+# Real and imaginary parts of C - ((1+\lambda/nu)^2+k^2)^2
+
+c2(w,k) = 4*w/nu*(1-w^2/nu^2+k^2)
+c1(w,k) = (1-w^2/nu^2+k^2)^2-4*w^2/nu^2
+
+# Real and imaginary parts of characteristic equation
+#M(w,k,R,V) = ab1(w,R,V)*c1(w,k)-ab2(w,R,V)*c2(w,k)-4*kappaS*R*(-2*w^2/nu^2*+2*k^2)
+#N(w,k,R,V) = ab1(w,R,V)*c2(w,k)+ab2(w,R,V)*c1(w,k)-4*kappaS*R*(w/nu*(1-w^2/nu^2+k^2*w/nu)
+
+# Implicit function theorem
+# dMdk*dNdw - dMdw*dNdk = 0
+# Define derivatives of ab1, ab2, c1 and c2
+dab1(w,R,V) = 4*w^3*tau^2/alpha^2-2*w*(2*tau/alpha*(kappaV-4*V)+2/alpha^2*(2*(V^2+R^2*pi^2*tau^2)-V*kappaV)+tau^2)
+dab2(w,R,V) = -3*w^2*tau/alpha*(2*tau+1/alpha*(kappaV-4*V))+4*(2*(V^2+R^2*pi^2*tau^2)-V*kappaV)/alpha+tau*(kappaV-4*V)
+
+dc1dw(w,k) = -4*(w/nu^2)*(1-w^2/nu^2+k^2)-8*w/nu^2
+dc2dw(w,k) = 4/nu*(1-3*w^2/nu^2+k^2)
+dc1dk(w,k) = 4*k*(1-w^2/nu^2+k^2)
+dc2dk(w,k) = 8*k*w/nu
+
+# Derivative of M and N wrt w and k
+#dMdk(w,k,R,V) = ab1(w,R,V)*dc1dk(w,k)-ab2(w,R,V)*dc2dk(w,k)-16*kappaS*R*k
+#dMdw(w,k,R,V) = dab1(w,R,V)*c1(w,k)+ab1(w,R,V)*dc1dw(w,k)-dab2(w,R,V)*c2(w,k)-ab2(w,R,V)*dc2dw(w,k)+16*kappaS*R*w/nu^2
+#dNdk(w,k,R,V) = ab1(w,R,V)*dc2dk(w,k)+ab2(w,R,V)*dc1dk(w,k)-8*k*kappaS*R*w/nu
+#dNdw(w,k,R,V) = dab1(w,R,V)*c2(w,k)+ab1(w,R,V)*dc2dw(w,k)+dab2(w,R,V)*c1(w,k)+ab2(w,R,V)*dc1dw(w,k)-4*kappaS*R/nu*(1-3*w^2/nu^2+k^2)
+
+kappaV'=(ab1(w,R,V)*dc1dk(w,k)-ab2(w,R,V)*dc2dk(w,k)+16*kappaS*R*k)*(dab1(w,R,V)*c2(w,k)+ab1(w,R,V)*dc2dw(w,k)+dab2(w,R,V)*c1(w,k)+ab2(w,R,V)*dc1dw(w,k)+4*kappaS*R/nu*(1-3*w^2/nu^2+k^2))-(dab1(w,R,V)*c1(w,k)+ab1(w,R,V)*dc1dw(w,k)-dab2(w,R,V)*c2(w,k)-ab2(w,R,V)*dc2dw(w,k)-16*kappaS*R*w/nu^2)*(ab1(w,R,V)*dc2dk(w,k)+ab2(w,R,V)*dc1dk(w,k)+8*k*kappaS*R*w/nu)
+R'=-kappaV*R+2*R*V+delta/(tau*pi)
+V'=eta0+V^2-pi^2*tau^2*R^2
+w'=ab1(w,R,V)*c1(w,k)-ab2(w,R,V)*c2(w,k)-8*kappaS*R*(w^2/nu^2-k^2)
+k'=ab1(w,R,V)*c2(w,k)+ab2(w,R,V)*c1(w,k)+4*kappaS*R*w/nu*(1-w^2/nu^2+k^2)
+
+
+@ meth=cvode,dt=0.001,total=40,maxstore=10000000,bounds=1000
+done
