@@ -2,13 +2,13 @@ function F1(R, V, kappaV, Delta, tau)
     return (1/tau)*(-kappaV * R .+ 2 * R .* V .+ Delta / (tau * pi))
 end
 
-function G1(R, V, g, tau, eta_0)
-    return  (1/tau)*(g .- (pi * tau * R) .^ 2 .+ V .^ 2 .+ eta_0)
+function G1(R, V, g, kappaS,tau, eta_0)
+    return  (1/tau)*(kappaS*g .- (pi * tau * R) .^ 2 .+ V .^ 2 .+ eta_0)
 end
 
-function ddR(R, V, g, tau, Delta, kappaV, eta_0)
+function ddR(R, V, g, tau, Delta, kappaS, kappaV, eta_0)
     return (1 / tau) .* (-kappaV .+ 2 * V) .* F1(R, V, kappaV, Delta, tau) .+
-           (2 / tau) .* R .* G1(R, V, g,tau, eta_0)
+           (2 / tau) .* R .* G1(R, V, g,kappaS, tau, eta_0)
 end
 
 function init_conds(nterms,kc,phi_vec,c_vec,X,Y)

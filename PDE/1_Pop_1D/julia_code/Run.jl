@@ -21,9 +21,9 @@ include("find_SS.jl")
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # SPATIAL DISCRETISATION PARAMETERS
 
-X_max = 5pi; # size f domain
-dx = pi/(2^5) # spatial discretisation size
-T_max = 100000 # maximum time
+X_max = 2pi; # size f domain
+dx = pi/(2^7) # spatial discretisation size
+T_max =8000 # maximum time
 dxdx = dx * dx;
 X = Int(2*X_max / dx); # number of grid points
 Dxx = (1 / dxdx) * D2x(X) # create second order finite difference matrix
@@ -31,13 +31,14 @@ X_space = LinRange(-X_max,X_max,X)
 
 # # #    MODELPARAMETERS  # # # # # # # # # # # # # #
 
-v = .11       # axonal velocity
-eta_0 =1   # mean drive
-Delta = 0.5   # coherence
-alfa = 0.5     # synaptic time constant
-kappaV =  1.8# gap junction strength
-kappaS =10    # synaptic coupling strength
-tau = 15      # membrane time constant
+v = 10 # axonal velocity
+eta_0 =0.05 # mean drive
+Delta = 0.1        # coherence
+alfa = 0.5              # synaptic time constant
+kappaV =0.3# gap junction strength
+kappaS =-60     # synaptic coupling strength
+tau = 12# membrane time constant
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 
@@ -52,7 +53,7 @@ tau = 15      # membrane time constant
 #very high kappaV = 1.2
 
 dt=0.5
-k_c = 1 # wave length to excite (initial conditions)
+k_c = 1# wave length to excite (initial conditions)
 
 print(X)
 #steady state
@@ -79,6 +80,7 @@ V0 .= zeroRV[2] .+ 1*perturb
 psi0 .= 0 .+ 1*perturb
 A10 .= 0 .+ 1*perturb
 A20 .= 0 .+ 1*perturb
+A30 .= 0 .+ 1*perturb
 p0 .= 0 .+ 1*perturb
 g0 .= 0 .+ 1*perturb
 
@@ -98,7 +100,7 @@ tspan = (0.0, T_max)
 params = [tau, kappaV,kappaS, eta_0, alfa, Delta, v , Dxx]
 prob = ODEProblem(rhsFun, u0, tspan, params)
 print("Solving...")
-sol = solve(prob,saveat = dt, progress = true,maxiters=1e7)
+sol = solve(prob,RK4(),saveat = dt, progress = true,maxiters=1e7)
 print("\n Done!")
 
 R = sol[1:X,:]
@@ -109,9 +111,9 @@ g = sol[7*X+1:8*X,:]
 W = pi*tau*R + im*V
 Z = (1 .-conj.(W)) ./(1 .+conj.(W))
 sync = abs.(Z)
-syncSave = sync[:,end-500:end]
+syncSave = sync[:,end-200:end]
 RSave = R[:,end-500:end]
-t = collect(0:dt:T_max
+t = collect(0:dt:T_max)
 
 
 
@@ -124,9 +126,9 @@ t = collect(0:dt:T_max
 print("save? (Y/N) ")
 ans = readline()
 if ans == "Y" || ans == "y"
-npzwrite("/home/james/PhD_Work/Python_Code/Brain_Top_Paper/Review_Paper/data/1D_sync_highhighk.npy", syncSave)
+npzwrite("/home/james/PhD_Work/Python_Code/Brain_Top_Paper/Review_Paper/data/1D_sync_Turing.npy", syncSave)
 end
 
 M = 500
 heatmap(t[end-M:end] .-t[end-M],X_space,sync[:,end-M:end])
-#@gif for i = 1:2000; plot(sync[:,i],ylims=[0,1]);end
+@gif for i = 1:200; plot(syncSave[:,i],ylims=[0,1]);end

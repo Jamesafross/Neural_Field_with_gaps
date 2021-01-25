@@ -1,0 +1,9 @@
+# one population mass model with gaps
+par kappaV=0 eta=1 kappaS=1 Delta=0.5 alpha=0.5 beta=1 tau=15
+init r=0.10001,v=-0.26829,g=0.1001,p=0.1001
+dr/dt=(1/tau)*(-kappaV*r+2*r*v+(Delta/pi))
+dv/dt=(1/tau)*(-g*kappaS-(pi^2)*r^2+v^2+eta)
+dp/dt=alpha*(-p+beta*r)
+dg/dt=alpha*(-g+p)
+@ total=2000, dt=0.01
+done

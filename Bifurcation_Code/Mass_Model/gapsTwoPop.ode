@@ -1,0 +1,22 @@
+# two population mass model with gap
+par  etaI=-10 kappavE=0.5 kappavI=0.0 kappasEE=15 kappasIE=25.0 kappasEI=-15 kappasII=-15 DeltaE=0.5 DeltaI=0.5 etaE=5.0 alphaEE=0.2 alphaIE=0.1 alphaEI=0.07 alphaII=0.06 tauE=1.0 tauI=1.0
+init rE=1.283 
+init rI=0.02
+init vE=-0.012
+init vI=-5.06
+init pEE=0.0,pIE=0.0,pEI=0.0,pII=0.0,gEE=0.0,gIE=0.0,gEI=0.0,gII=0.0
+drI/dt=(1/tauI)*(-kappavI*rI+2*rI*vI+(DeltaI/(tauI*pi)))
+dvE/dt=(1/tauE)*(kappasEE*gEE+kappasEI*gEI-(tauE^2)*(pi^2)*rE^2+vE^2+etaE)
+dvI/dt=(1/tauI)*(kappasIE*gIE+kappasII*gII-(tauI^2)*(pi^2)*rI^2+vI^2+etaI)
+dpEE/dt=alphaEE*(-pEE+rE)
+dpIE/dt=alphaIE*(-pIE+rE)
+dpEI/dt=alphaEI*(-pEI+rI)
+dpII/dt=alphaII*(-pII+rI)
+dgEE/dt=alphaEE*(-gEE+pEE)
+dgIE/dt=alphaIE*(-gIE+pIE)
+dgEI/dt=alphaEI*(-gEI+pEI)
+dgII/dt=alphaII*(-gII+pII)
+drE/dt=(1/tauE)*(-kappavE*rE+2*rE*vE+(DeltaE/(tauE*pi)))
+aux syncE=sqrt(((1-pi*rE)^2 + vE^2)/((1+pi*rE)^2 + vE^2))
+@ total=30000, dt=0.01 yhi=40 ylo=-40
+done

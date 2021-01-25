@@ -28,10 +28,7 @@ alphaEE = 0.2
 alphaIE = 0.1
 alphaEI = 0.07
 alphaII = 0.06
-betaEE = 5
-betaIE = -10
-betaEI = 4
-betaII = -5
+
 
 
 
@@ -46,9 +43,9 @@ u01= hopf_init()
 
 
 p = [tauE,tauI,kappaVE,kappaVI,kappaSEE,kappaSIE,kappaSEI,kappaSII,eta_0E,eta_0I,deltaE,deltaI,alphaEE,alphaIE,alphaEI,alphaII]
-p2 = [tauE,tauI,kappaVE,kappaVI,betaEE,betaIE,betaEI,betaII,eta_0E,eta_0I,deltaE,deltaI,alphaEE,alphaIE,alphaEI,alphaII]
+
 tspan = (0.0,T)
-prob1 = ODEProblem(rhs_function,u01,tspan,p2)
+prob1 = ODEProblem(rhs_function,u01,tspan,p)
 sol1 = solve(prob1,saveat = 0.1)
 
 #plot(real.(Z_to_W.(sol3[1,1:end]))/pi)
