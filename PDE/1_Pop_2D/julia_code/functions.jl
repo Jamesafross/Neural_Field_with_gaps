@@ -7,8 +7,8 @@ function dVdtFunc(R, V, g, kappaS,tau, eta_0)
 end
 
 function d2Rdt2Func(R, V, g, tau, Delta, kappaS, kappaV, eta_0)
-    return (1 / tau) .* (-kappaV .+ 2 * V) .* F1(R, V, kappaV, Delta, tau) .+
-           (2 / tau) .* R .* G1(R, V, g,kappaS, tau, eta_0)
+    return (1 / tau) .* (-kappaV .+ 2 * V) .* dRdtFunc(R, V, kappaV, Delta, tau) .+
+           (2 / tau) .* R .* dVdtFunc(R, V, g,kappaS, tau, eta_0)
 end
 
 function init_conds(nterms,kc,phi_vec,c_vec,X,Y)
