@@ -1,6 +1,7 @@
 function rhsFun(du, u, p, t)
-    # f1 = ∂R/∂t
-    # df1 = ∂²R/∂t²
+    # dRdt = ∂R/∂t
+    # d2Rdt2 = ∂²R/∂t²
+    # dVdt = ∂V∂t
     R = u[1:XX]
     V = u[XX+1:2*XX]
     psi = u[2*XX+1:3*XX]
