@@ -23,10 +23,10 @@ include("find_SS.jl")
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # SPATIAL DISCRETISATION PARAMETERS
 #
-X_max = 1.0pi  # maximum of domain
-X_min = -1.0pi # minimum of domain
-X = 50       #number of grid points
-T_max = 20000     # number of time points (dt is decided by solver)
+X_max = 3.0pi  # maximum of domain
+X_min = -3.0pi # minimum of domain
+X = 200   #number of grid points
+T_max = 50000     # number of time points (dt is decided by solver)
 dx = 2*(X_max-X_min)/X # spatial discretisation size
 print("\n dx = ",dx,"\n")
 dxdx = dx * dx;
@@ -42,7 +42,7 @@ alfa = 0.5              # synaptic time constant
 kappaV =0.695# gap junction strength
 kappaS =12     # synaptic coupling strength
 tau = 20# membrane time constant
-saveat =50
+saveat =100
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # travelling & target waves kappaV =0.693
@@ -69,8 +69,8 @@ R0 = reshape(R0,X,X)
 
 perturb = zeros(X,X)
 
-perturb = real(0.001*init_conds(3,1,[0,2pi/3,4pi/3],[1,1,1],Xspace,Xspace'))
-perturb = real(0.001*init_conds(2,1,[0,2pi/3,4pi/3],[1,1,1],Xspace,Xspace'))
+perturb = real(0.001*init_conds(3,2,[0,2pi/3,4pi/3],[1,1,1],Xspace,Xspace'))
+#perturb = real(0.001*init_conds(2,1,[0,2pi/3,4pi/3],[1,1,1],Xspace,Xspace'))
 #perturb = real(0.001*init_conds(1,1,[0,2pi/3,4pi/3],[1,1,1],Xspace,Xspace')) #
 #perturb = 0.001*exp.(-abs.(Xspace .+ Xspace'))
 #perturb = 0.001*(exp.(-Xspace.^2 .- (Xspace').^2)) # guassian for target waves pattern
@@ -94,11 +94,11 @@ ans1 = readline(stdin)
     if ans1 == "Y" || ans1 == "y"
         #u0 = sol[:,end]
         u0 = zeros(9 * XX)
-        u0 = load("endsim2.jld","arr")
-        #u0 = sol[:,end]
-        Dxx = (1/dxdx)*D2r1(X, XX)
-        Dyy = (1/dxdx)*D2r2(X, XX)
-        Dxxyy = Dxx+Dyy
+        #u0 = load("endsim2.jld","arr")
+        u0 = sol[:,end]
+        #Dxx = (1/dxdx)*D2r1(X, XX)
+        #Dyy = (1/dxdx)*D2r2(X, XX)
+        #Dxxyy = Dxx+Dyy
         #print(size(u0))
     else
         u0 = zeros(8 * XX)

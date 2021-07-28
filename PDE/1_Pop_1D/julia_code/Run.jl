@@ -21,7 +21,7 @@ include("find_SS.jl")
 # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # SPATIAL DISCRETISATION PARAMETERS
 
-X_max = 2pi; # size f domain
+X_max = 5pi; # size f domain
 dx = pi/(2^7) # spatial discretisation size
 T_max =8000 # maximum time
 dxdx = dx * dx;
@@ -111,7 +111,7 @@ g = sol[7*X+1:8*X,:]
 W = pi*tau*R + im*V
 Z = (1 .-conj.(W)) ./(1 .+conj.(W))
 sync = abs.(Z)
-syncSave = sync[:,end-200:end]
+syncSave = sync[:,end-5000:end]
 RSave = R[:,end-500:end]
 t = collect(0:dt:T_max)
 
@@ -129,6 +129,6 @@ if ans == "Y" || ans == "y"
 npzwrite("/home/james/PhD_Work/Python_Code/Brain_Top_Paper/Review_Paper/data/1D_sync_Turing.npy", syncSave)
 end
 
-M = 500
+M = 5000
 heatmap(t[end-M:end] .-t[end-M],X_space,sync[:,end-M:end])
 @gif for i = 1:200; plot(syncSave[:,i],ylims=[0,1]);end

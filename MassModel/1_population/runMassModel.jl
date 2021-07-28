@@ -2,10 +2,10 @@ using Plots
 using NPZ
 using SparseArrays
 using DifferentialEquations
-include("Solvers.jl")
-include("trim.jl")
+
+
 include("rhsFunctions.jl")
-include("firingrate.jl")
+
 
 #parameters
 kappaV = 1.2;
